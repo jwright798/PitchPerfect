@@ -53,6 +53,9 @@
                             <constraint firstItem="HW0-IE-dvB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="l4t-xz-ZJe"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="recordLabel" destination="HW0-IE-dvB" id="dDh-mg-ZOS"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
