@@ -38,13 +38,26 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         let filePath = URL(string: pathArray.joined(separator: "/"))
         
         let session = AVAudioSession.sharedInstance()
-        try! session.setCategory(AVAudioSessionCategoryPlayAndRecord, with:AVAudioSessionCategoryOptions.defaultToSpeaker)
+        //try! session.setCategory(AVAudioSessionCategoryPlayAndRecord, with:AVAudioSessionCategoryOptions.defaultToSpeaker)
         
-        try! audioRecorder = AVAudioRecorder(url: filePath!, settings: [:])
-        audioRecorder.delegate = self
-        audioRecorder.isMeteringEnabled = true
-        audioRecorder.prepareToRecord()
-        audioRecorder.record()
+        if (session.responds(to: #selector(AVAudioSession.requestRecordPermission(_:)))) {
+            AVAudioSession.sharedInstance().requestRecordPermission({(granted: Bool)-> Void in
+                if granted {
+                    print("granted")
+                    try! session.setCategory(AVAudioSessionCategoryPlayAndRecord, with:AVAudioSessionCategoryOptions.defaultToSpeaker)
+                    try! session.setActive(true)
+                    try! self.audioRecorder = AVAudioRecorder(url: filePath!, settings: [:])
+                    self.audioRecorder.delegate = self
+                    self.audioRecorder.isMeteringEnabled = true
+                    self.audioRecorder.prepareToRecord()
+                    self.audioRecorder.record()
+                } else{
+                    print("not granted")
+                }
+            })
+            
+        }
+        
     }
     
     @IBAction func stopRecordingPressed(_ sender: Any) {
